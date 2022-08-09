@@ -749,7 +749,11 @@ For x = 1 To CountString(ctext, #LF$)+2
     line = Indent(line,"Function","End Function")
     line = Indent(line,"Private Function","End Function")
     line = Indent(line,"Public Function","End Function")
+    line = Indent(line,"Private Function","End Function")
+    line = Indent(line,"Public Function","End Function")
     line = Indent(line,"Sub","End Sub")
+    line = Indent(line,"Private Sub","End Sub")
+    line = Indent(line,"Public Sub","End Sub")
     line = Indent(line,"If","End If","","","Else")
     line = Indent(line,"For","Next","To")
     line = Indent(line,"For Each","Next")
@@ -857,8 +861,8 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 536
-; FirstLine = 24
+; CursorPosition = 750
+; FirstLine = 186
 ; Folding = M9
 ; EnableXP
 ; DPIAware
