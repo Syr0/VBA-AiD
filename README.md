@@ -13,8 +13,8 @@ Options:
 /h      Usage
 
 Example:
-VBA_AiD /aide testfile.vba resultfile.txt
-VBA_AiD -aidevarsfuncarraydocl
+[ ] VBA_AiD /aide testfile.vba resultfile.txt
+[ ] VBA_AiD -aidevarsfuncarraydocl
 
 
 <a href="https://www.flaticon.com/free-icons/indent" title="indent icons">Indent icons created by Freepik - Flaticon</a>
