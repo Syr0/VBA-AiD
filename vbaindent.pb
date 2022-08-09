@@ -61,6 +61,7 @@ AddElement(VBASyntax()) : VBASyntax() = "VAL"
 AddElement(VBASyntax()) : VBASyntax() = "VDB"
 AddElement(VBASyntax()) : VBASyntax() = "XOR"
 AddElement(VBASyntax()) : VBASyntax() = "EXIT"
+AddElement(VBASyntax()) : VBASyntax() = "ELSE"
 AddElement(VBASyntax()) : VBASyntax() = "ACOS"
 AddElement(VBASyntax()) : VBASyntax() = "ACOT"
 AddElement(VBASyntax()) : VBASyntax() = "ASIN"
@@ -119,6 +120,7 @@ AddElement(VBASyntax()) : VBASyntax() = "VARA"
 AddElement(VBASyntax()) : VBASyntax() = "XIRR"
 AddElement(VBASyntax()) : VBASyntax() = "XNPV"
 AddElement(VBASyntax()) : VBASyntax() = "YEAR"
+AddElement(VBASyntax()) : VBASyntax() = "CLNG"
 AddElement(VBASyntax()) : VBASyntax() = "CLEAR"
 AddElement(VBASyntax()) : VBASyntax() = "ACOSH"
 AddElement(VBASyntax()) : VBASyntax() = "ACOTH"
@@ -253,6 +255,7 @@ AddElement(VBASyntax()) : VBASyntax() = "T.DIST"
 AddElement(VBASyntax()) : VBASyntax() = "T.TEST"
 AddElement(VBASyntax()) : VBASyntax() = "Z.TEST"
 AddElement(VBASyntax()) : VBASyntax() = "COOKIE"
+AddElement(VBASyntax()) : VBASyntax() = "PRIVATE"
 AddElement(VBASyntax()) : VBASyntax() = "ACCRINT"
 AddElement(VBASyntax()) : VBASyntax() = "ADDRESS"
 AddElement(VBASyntax()) : VBASyntax() = "AVERAGE"
@@ -506,6 +509,7 @@ Procedure.s ULcase(text$)
 EndProcedure
 
 Global NewMap Switches()
+
 Procedure.s Indent(Text$,StartKeyWord.s,EndKeyword.s,SecondStartKeyword.s="",SecondEndKeyword.s="",Exclude$="",NrOfIndents=1)
   
   If FindString(Text$,EndKeyword,0,#PB_String_NoCase)
@@ -564,7 +568,6 @@ Procedure RegexMatchLineExtract(text$,List ExtractionsResults.s(),Regex)
     EndIf
   EndIf
 EndProcedure
-
 
 Procedure.s ReplaceObfString(text.s,SearchString.s,ReplaceString.s)
   returntext.s = text
@@ -811,9 +814,9 @@ EndIf
 PrintN("Finished.")
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 618
-; FirstLine = 501
-; Folding = h9
+; CursorPosition = 569
+; FirstLine = 15
+; Folding = A9
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
