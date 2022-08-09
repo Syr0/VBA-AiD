@@ -121,6 +121,7 @@ AddElement(VBASyntax()) : VBASyntax() = "XIRR"
 AddElement(VBASyntax()) : VBASyntax() = "XNPV"
 AddElement(VBASyntax()) : VBASyntax() = "YEAR"
 AddElement(VBASyntax()) : VBASyntax() = "CLNG"
+AddElement(VBASyntax()) : VBASyntax() = "DATE"
 AddElement(VBASyntax()) : VBASyntax() = "CLEAR"
 AddElement(VBASyntax()) : VBASyntax() = "ACOSH"
 AddElement(VBASyntax()) : VBASyntax() = "ACOTH"
@@ -735,6 +736,12 @@ ObjectRegex = CreateRegularExpression(#PB_Any,"\n\t*(?:Const )?(\w+)[\(\.=]")
 line.s 
 result.s 
 
+
+If Verbose=1:PrintN("Replace Else If to Else\nIf"):EndIf
+    ;Special Case Else IF are NOT Elif but Else{If()...}
+ctext = ReplaceString(ctext,"Else If","Else"+#LF$+"If")
+
+
 If Verbose=1:PrintN("Indent Line by line"):EndIf
 For x = 1 To CountString(ctext, #LF$)+2
   
@@ -744,6 +751,7 @@ For x = 1 To CountString(ctext, #LF$)+2
   If AutoIndent
     line = LTrim(line,Chr(9))
     line = LTrim(line," ")
+    
     
     line = Indent(line,"Class","End Class")
     line = Indent(line,"Function","End Function")
@@ -861,9 +869,9 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 750
-; FirstLine = 186
-; Folding = M9
+; CursorPosition = 743
+; FirstLine = 660
+; Folding = N9
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
