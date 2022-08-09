@@ -565,7 +565,7 @@ Procedure RegexExtract(text$,List ExtractionsResults.s(),Regex)
     Wend
   EndIf
 EndProcedure
-  
+
 Procedure RegexMatchLineExtract(text$,List ExtractionsResults.s(),Regex)
   If ExamineRegularExpression(Regex,text$)
     If NextRegularExpressionMatch(Regex)
@@ -603,6 +603,17 @@ Procedure.s ReplaceObfString(text.s,SearchString.s,ReplaceString.s)
   ProcedureReturn returntext
 EndProcedure
 
+Procedure ExcludeList(List Blacklist.s(), List ListToChange.s())
+  ForEach Blacklist()
+    ForEach ListToChange()
+      If Blacklist() = ListToChange()
+        DeleteElement(ListToChange())
+      EndIf
+    Next
+  Next
+  
+EndProcedure
+
 Procedure SortByStringLength_SLOW(List SortList_temp.s(),StrictCase=0)
   NewMap Stringlength()
   longest = 0
@@ -626,7 +637,7 @@ Procedure SortByStringLength_SLOW(List SortList_temp.s(),StrictCase=0)
         Else
           SortList_temp() = ULcase(MapKey(Stringlength()))
         EndIf
-          
+        
       EndIf
     Next
   Next
@@ -690,7 +701,7 @@ If Clipboard = 1
 Else
   If file1 = "" Or FileSize(file1) <= 0
     PrintN("Error, no file specified"+#LF$+Usage$)
-   Else
+  Else
     f = ReadFile(#PB_Any,file1)
     While Eof(f) = 0
       ctext + ReadString(f)+#LF$
@@ -755,7 +766,7 @@ result.s
 
 
 If Verbose=1:PrintN("Replace Else If to Else\nIf"):EndIf
-    ;Special Case Else IF are NOT Elif but Else{If()...}
+;Special Case Else IF are NOT Elif but Else{If()...}
 ctext = ReplaceString(ctext,"Else If","Else"+#LF$+"If")
 
 
@@ -779,14 +790,17 @@ For x = 1 To CountString(ctext, #LF$)+2
     line = LTrim(line," ")
     
     line = Indent(line,"Class","End Class")
+    line = Indent(line,"Public Class","End Class")
+    line = Indent(line,"Private Class","End Class")
+    
     line = Indent(line,"Function","End Function")
-    line = Indent(line,"Private Function","End Function")
     line = Indent(line,"Public Function","End Function")
     line = Indent(line,"Private Function","End Function")
-    line = Indent(line,"Public Function","End Function")
+    
     line = Indent(line,"Sub","End Sub")
     line = Indent(line,"Private Sub","End Sub")
     line = Indent(line,"Public Sub","End Sub")
+    
     line = Indent(line,"If","End If","","","Else")
     line = Indent(line,"For","Next","To")
     line = Indent(line,"For Each","Next")
@@ -805,7 +819,7 @@ MergeLists(VoidFunctions(),Functions())
 
 If Verbose=1:PrintN("Print Arrays"):EndIf
 If PrintArray = 1
-  SortByStringLength_SLOW(Arrays())
+  SortByStringLength_SLOW(Arrays());Check for doubles and remove it
   PrintN("Found Arrays: ")
   ForEach Arrays()
     If ListIndex(Arrays()) < ListSize(Arrays())
@@ -820,7 +834,9 @@ EndIf
 
 If Verbose=1:PrintN("Print Vars"):EndIf
 If PrintVars = 1
-  SortByStringLength_SLOW(Variables())
+  SortByStringLength_SLOW(Variables());Check for doubles and remove it
+  ExcludeList(Arrays(),Variables())
+  
   PrintN("Found Variables: ")
   ForEach Variables()
     If ListIndex(Variables()) < ListSize(Variables())
@@ -833,9 +849,12 @@ If PrintVars = 1
 EndIf
 
 
+
 If Verbose=1:PrintN("Print Funcs"):EndIf
 If PrintFuncs = 1
-  SortByStringLength_SLOW(Functions())
+  SortByStringLength_SLOW(Functions());Check for doubles and remove it
+  ExcludeList(Arrays(),Functions())
+  ExcludeList(Variables(),Functions())
   PrintN("Found Functions: ")
   ForEach Functions()
     If ListIndex(Functions()) < ListSize(Functions())
@@ -870,7 +889,7 @@ If Verbose=1:PrintN("Restore original strings"):EndIf
 ;Backup Strings
 SortByStringLength_SLOW(SavedStrings(),1)
 ForEach SavedStrings()
- result = ReplaceObfString(result,SavedStrings(),SavedStrings())
+  result = ReplaceObfString(result,SavedStrings(),SavedStrings())
 Next
 
 
@@ -889,9 +908,9 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 793
-; FirstLine = 675
-; Folding = B5
+; CursorPosition = 897
+; FirstLine = 880
+; Folding = -4
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
