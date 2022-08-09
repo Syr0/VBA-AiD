@@ -605,7 +605,6 @@ Procedure SortByStringLength_SLOW(List SortList_temp.s())
   
 EndProcedure
 
-
 ctext.s
 
 Usage$ = "VBA_AiDe [Options] [VBA-file] [Result-file]"+#LF$
@@ -617,6 +616,7 @@ Usage$ + "/ai"+Chr(9)+"auto-indent the result"+#LF$
 Usage$ + "/de"+Chr(9)+"deobfuscate Upper-/LowerCase"+#LF$
 Usage$ + "/do"+Chr(9)+"deobfuscate one-liner"+#LF$
 Usage$ + "/cl"+Chr(9)+"reads string from clipboard and writes the result back"+#LF$
+Usage$ + "/ve"+Chr(9)+"verbose - print status messages"+#LF$
 Usage$ + "/h"+Chr(9)+"Usage"+#LF$
 Usage$ +#LF$
 Usage$ + "Example:"+ #LF$
@@ -629,7 +629,7 @@ If CountProgramParameters() = 0
   PrintN(Usage$)
   End
 EndIf
-
+t = ElapsedMilliseconds()
 oneparam$ = "" : file1.s = "" : file2.s = ""
 For x = 0 To CountProgramParameters()
   If FileSize(GetPathPart(ProgramParameter(x))) = -2
@@ -650,25 +650,19 @@ If FindString(oneparam$,"ai",1,#PB_String_NoCase) : AutoIndent = 1:EndIf
 If FindString(oneparam$,"de",1,#PB_String_NoCase) : Deobf = 1:EndIf
 If FindString(oneparam$,"do",1,#PB_String_NoCase) : DeobfOneLine = 1:EndIf
 If FindString(oneparam$,"cl",1,#PB_String_NoCase) : Clipboard = 1:EndIf
+If FindString(oneparam$,"ve",1,#PB_String_NoCase) : Verbose = 1:EndIf
 If FindString(oneparam$,"h",1,#PB_String_NoCase) 
   PrintN(Usage$)
   End
 EndIf
+If Verbose=1:PrintN("Loading Input"):EndIf
 If Clipboard = 1
   ctext = GetClipboardText()
-;   If Len(ctext) > #MaxFileSize
-;     PrintN("I can only handle up to 50Mb files. I do what I can!")
-;   EndIf
   
 Else
   If file1 = "" Or FileSize(file1) <= 0
     PrintN("Error, no file specified"+#LF$+Usage$)
    Else
-;     If FileSize(file1) > #MaxFileSize
-;       PrintN("I can only handle up to 50Mb files. I do what I can!")
-;     EndIf
-    
-    
     f = ReadFile(#PB_Any,file1)
     While Eof(f) = 0
       ctext + ReadString(f)+#LF$
@@ -677,12 +671,14 @@ Else
   EndIf
 EndIf
 
-If Left(ctext,22) = "<%@language=VBScript.Encode"
+If Left(ctext,27) = "<%@language=VBScript.Encode"
   PrintN("Warning: VBE-Encoding detected. I cannot handle that.")
   PrintN("Maybe https://github.com/JohnHammond/vbe-decoder can help you.")
   PrintN("Trying my best anyway...")
 EndIf
 
+If Verbose=1:PrintN("Extract Strings to preserve case-sensitve"):EndIf
+NewList SavedStrings.s()
 newtext.s = ""
 If DeobfOneLine = 1
   For x = 0 To CountString(ctext,Chr(34))
@@ -691,6 +687,8 @@ If DeobfOneLine = 1
       newtext.s+ReplaceString(Syntax$,":",#LF$)
     Else
       String$= StringField(ctext,x+1,Chr(34))
+      AddElement(SavedStrings())
+      SavedStrings() = Chr(34)+String$+Chr(34)
       newtext.s+Chr(34)+String$+Chr(34)
     EndIf
   Next
@@ -698,6 +696,7 @@ If DeobfOneLine = 1
   ctext + StringField(ctext,x+1,Chr(34))
 EndIf
 
+If Verbose=1:PrintN("Un-Case Syntax for later regex."):EndIf
 If Deobf = 1
   ForEach VBASyntax()
     ctext = ReplaceObfString(ctext,VBASyntax(),ULcase(VBASyntax()) )
@@ -708,6 +707,7 @@ ElseIf Deobf = 0
   Next
 EndIf
 
+If Verbose=1:PrintN("Create Regexs"):EndIf
 NewList Functions.s()
 functionsNameRegex = CreateRegularExpression(#PB_Any,"(?:Function|Sub) (\w+)\(.*\)")
 
@@ -725,7 +725,12 @@ ObjectRegex = CreateRegularExpression(#PB_Any,"\n\t*(?:Const )?(\w+)[\(\.=]")
 
 line.s 
 result.s 
+
+If Verbose=1:PrintN("Indent Line by line"):EndIf
 For x = 1 To CountString(ctext, #LF$)+2
+  
+  If Verbose=1 And x%10 = 0 :PrintN("Line "+Str(x)+"..."):EndIf
+  
   line = StringField(ctext,x,#LF$)
   If AutoIndent
     line = LTrim(line,Chr(9))
@@ -749,8 +754,19 @@ For x = 1 To CountString(ctext, #LF$)+2
   result + line+#LF$
 Next
 
+
+If Verbose=1:PrintN("Restore original strings"):EndIf
+;Backup Strings
+ForEach SavedStrings()
+ result = ReplaceObfString(result,SavedStrings(),SavedStrings())
+Next
+
+
+If Verbose=1:PrintN("Merge void Functions with normal Functions"):EndIf
 MergeLists(VoidFunctions(),Functions())
 
+
+If Verbose=1:PrintN("Print Arrays"):EndIf
 If PrintArray = 1
   SortByStringLength_SLOW(Arrays())
   PrintN("Found Arrays: ")
@@ -764,6 +780,8 @@ If PrintArray = 1
   PrintN("")
 EndIf
 
+
+If Verbose=1:PrintN("Print Vars"):EndIf
 If PrintVars = 1
   SortByStringLength_SLOW(Variables())
   PrintN("Found Variables: ")
@@ -777,6 +795,8 @@ If PrintVars = 1
   PrintN("")
 EndIf
 
+
+If Verbose=1:PrintN("Print Funcs"):EndIf
 If PrintFuncs = 1
   SortByStringLength_SLOW(Functions())
   PrintN("Found Functions: ")
@@ -791,19 +811,24 @@ If PrintFuncs = 1
 EndIf
 
 
+If Verbose=1:PrintN("Merge all Objects into on replacement-list"):EndIf
 MergeLists(Functions(),objects())
 MergeLists(Variables(),objects())
 MergeLists(Arrays(),objects())
 MergeLists(VBASyntax(),objects())
+
+If Verbose=1:PrintN("Sort and Optimize list(slow!)"):EndIf
 SortByStringLength_SLOW(objects())
 
+
+If Verbose=1:PrintN("Deobfuscate Objects, Funcs, Vars..."):EndIf
 If Deobf = 1
-  SortByStringLength_SLOW(Objects())
   ForEach objects()
     result = ReplaceObfString(result,objects(),ULcase(objects()) )
   Next
 EndIf
 
+If Verbose=1:PrintN("Write result to output"):EndIf
 If Clipboard = 1
   SetClipboardText(result)
 Else
@@ -814,11 +839,13 @@ Else
   EndIf
 EndIf
 PrintN("Finished.")
+
+If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 199
-; FirstLine = 183
-; Folding = B9
+; CursorPosition = 842
+; FirstLine = 218
+; Folding = A9
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
