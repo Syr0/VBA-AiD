@@ -1,6 +1,6 @@
 # VBA-AiD
 
-Deobfuscator &amp; Autoindenter
+VBA Deobfuscator &amp; Autoindenter
 
 VBA_AiDe [Options] [VBA-file] [Result-file]
 
