@@ -583,22 +583,30 @@ Procedure.s ReplaceObfString(text.s,SearchString.s,ReplaceString.s)
   ProcedureReturn returntext
 EndProcedure
 
-Procedure SortByStringLength_SLOW(List SortList_temp.s())
+Procedure SortByStringLength_SLOW(List SortList_temp.s(),StrictCase=0)
   NewMap Stringlength()
   longest = 0
   ForEach SortList_temp()
     If Len(SortList_temp()) > longest
       longest = Len(SortList_temp())
     EndIf
-    
-    Stringlength(UCase(SortList_temp())) = Len(SortList_temp())
+    If StrictCase = 1
+      Stringlength(SortList_temp()) = Len(SortList_temp())
+    Else
+      Stringlength(UCase(SortList_temp())) = Len(SortList_temp())
+    EndIf 
   Next
   ClearList(SortList_temp())
   For x = 0 To longest
     ForEach Stringlength()
       If Stringlength() = x
         AddElement(SortList_temp()) 
-        SortList_temp() = ULcase(MapKey(Stringlength()))
+        If StrictCase = 1
+          SortList_temp() = MapKey(Stringlength())
+        Else
+          SortList_temp() = ULcase(MapKey(Stringlength()))
+        EndIf
+          
       EndIf
     Next
   Next
@@ -755,12 +763,6 @@ For x = 1 To CountString(ctext, #LF$)+2
 Next
 
 
-If Verbose=1:PrintN("Restore original strings"):EndIf
-;Backup Strings
-ForEach SavedStrings()
- result = ReplaceObfString(result,SavedStrings(),SavedStrings())
-Next
-
 
 If Verbose=1:PrintN("Merge void Functions with normal Functions"):EndIf
 MergeLists(VoidFunctions(),Functions())
@@ -828,6 +830,15 @@ If Deobf = 1
   Next
 EndIf
 
+
+If Verbose=1:PrintN("Restore original strings"):EndIf
+;Backup Strings
+SortByStringLength_SLOW(SavedStrings(),1)
+ForEach SavedStrings()
+ result = ReplaceObfString(result,SavedStrings(),SavedStrings())
+Next
+
+
 If Verbose=1:PrintN("Write result to output"):EndIf
 If Clipboard = 1
   SetClipboardText(result)
@@ -843,9 +854,9 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 842
-; FirstLine = 218
-; Folding = A9
+; CursorPosition = 595
+; FirstLine = 13
+; Folding = E+
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
