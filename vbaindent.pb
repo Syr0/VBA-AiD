@@ -537,6 +537,7 @@ Procedure.s Indent(Text$,StartKeyWord.s,EndKeyword.s,SecondStartKeyword.s="",Sec
   EndIf
   
   If FindString(Trim(Text$,Chr(9)),StartKeyWord,0,#PB_String_NoCase)= 1 And Not FindString(Text$,EndKeyword,0,#PB_String_NoCase)
+    
     If Len(SecondStartKeyword) > 0
       If FindString(text$,SecondStartKeyword,0,#PB_String_NoCase)
         Switches(StartKeyWord+EndKeyword) + 1
@@ -746,6 +747,8 @@ For x = 1 To CountString(ctext, #LF$)+2
     
     line = Indent(line,"Class","End Class")
     line = Indent(line,"Function","End Function")
+    line = Indent(line,"Private Function","End Function")
+    line = Indent(line,"Public Function","End Function")
     line = Indent(line,"Sub","End Sub")
     line = Indent(line,"If","End If","","","Else")
     line = Indent(line,"For","Next","To")
@@ -854,9 +857,9 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 595
-; FirstLine = 13
-; Folding = E+
+; CursorPosition = 536
+; FirstLine = 24
+; Folding = M9
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
