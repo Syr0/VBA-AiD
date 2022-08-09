@@ -619,7 +619,7 @@ Usage$ + "Example:"+ #LF$
 Usage$ + "VBA_AiD /aide testfile.vba resultfile.txt"+ #LF$
 Usage$ + "VBA_AiD /cl"
 
-OpenConsole("J0s VBA AutoIndent & Deobfuscator")
+OpenConsole("VBA AutoIndent & Deobfuscator")
 
 If CountProgramParameters() = 0
   PrintN(Usage$)
@@ -811,9 +811,9 @@ EndIf
 PrintN("Finished.")
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 676
-; FirstLine = 70
-; Folding = g9
+; CursorPosition = 621
+; FirstLine = 517
+; Folding = h9
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
