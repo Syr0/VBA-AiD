@@ -617,7 +617,7 @@ Usage$ + "/h"+Chr(9)+"Usage"+#LF$
 Usage$ +#LF$
 Usage$ + "Example:"+ #LF$
 Usage$ + "VBA_AiD /aide testfile.vba resultfile.txt"+ #LF$
-Usage$ + "VBA_AiD /cl"
+Usage$ + "VBA_AiD -aidevarsfuncarraydocl"
 
 OpenConsole("VBA AutoIndent & Deobfuscator")
 
@@ -811,8 +811,8 @@ EndIf
 PrintN("Finished.")
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 621
-; FirstLine = 517
+; CursorPosition = 618
+; FirstLine = 501
 ; Folding = h9
 ; EnableXP
 ; DPIAware
