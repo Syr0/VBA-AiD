@@ -197,6 +197,7 @@ AddElement(VBASyntax()) : VBASyntax() = "VAR.S"
 AddElement(VBASyntax()) : VBASyntax() = "VARPA"
 AddElement(VBASyntax()) : VBASyntax() = "YIELD"
 AddElement(VBASyntax()) : VBASyntax() = "WHILE"
+AddElement(VBASyntax()) : VBASyntax() = "WRITE"
 AddElement(VBASyntax()) : VBASyntax() = "SELECT"
 AddElement(VBASyntax()) : VBASyntax() = "ARABIC"
 AddElement(VBASyntax()) : VBASyntax() = "AVEDEV"
@@ -676,7 +677,7 @@ Else
   EndIf
 EndIf
 
-If Left(ctext,19) = "<%@language=VBScript.Encode"
+If Left(ctext,22) = "<%@language=VBScript.Encode"
   PrintN("Warning: VBE-Encoding detected. I cannot handle that.")
   PrintN("Maybe https://github.com/JohnHammond/vbe-decoder can help you.")
   PrintN("Trying my best anyway...")
@@ -684,7 +685,7 @@ EndIf
 
 newtext.s = ""
 If DeobfOneLine = 1
-  For x = 0 To CountString(ctext,Chr(34))-1
+  For x = 0 To CountString(ctext,Chr(34))
     If x%2 = 0
       Syntax$ = StringField(ctext,x+1,Chr(34))
       newtext.s+ReplaceString(Syntax$,":",#LF$)
@@ -694,6 +695,7 @@ If DeobfOneLine = 1
     EndIf
   Next
   ctext = newtext
+  ctext + StringField(ctext,x+1,Chr(34))
 EndIf
 
 If Deobf = 1
@@ -702,7 +704,7 @@ If Deobf = 1
   Next
 ElseIf Deobf = 0
   ForEach VBABasicSyntax()
-    ctext = ReplaceObfString(ctext,VBABasicSyntax(),ULcase(VBABasicSyntax()) )
+    ctext = ReplaceObfString(ctext,VBABasicSyntax(),ULcase(VBABasicSyntax()))
   Next
 EndIf
 
@@ -723,7 +725,7 @@ ObjectRegex = CreateRegularExpression(#PB_Any,"\n\t*(?:Const )?(\w+)[\(\.=]")
 
 line.s 
 result.s 
-For x = 1 To CountString(ctext, #LF$)+1
+For x = 1 To CountString(ctext, #LF$)+2
   line = StringField(ctext,x,#LF$)
   If AutoIndent
     line = LTrim(line,Chr(9))
@@ -814,9 +816,9 @@ EndIf
 PrintN("Finished.")
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 569
-; FirstLine = 15
-; Folding = A9
+; CursorPosition = 199
+; FirstLine = 183
+; Folding = B9
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
