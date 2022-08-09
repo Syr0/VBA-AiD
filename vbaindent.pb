@@ -793,7 +793,7 @@ For x = 1 To CountString(ctext, #LF$)+2
     line = Indent(line,"Select Case","End Select","","","Case",1)
   EndIf
   
-  If Verbose=1 And x%10 = 0 :Print("merge..."):EndIf
+  If Verbose=1 And x%10 = 0 :PrintN("merge..."):EndIf
   result + line+#LF$
 Next
 
@@ -889,8 +889,8 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 447
-; FirstLine = 441
+; CursorPosition = 793
+; FirstLine = 675
 ; Folding = B5
 ; EnableXP
 ; DPIAware
