@@ -832,10 +832,27 @@ If PrintArray = 1
 EndIf
 
 
+
+If Verbose=1:PrintN("Print Funcs"):EndIf
+If PrintFuncs = 1
+  SortByStringLength_SLOW(Functions());Check for doubles and remove it
+  ExcludeList(Arrays(),Functions())
+  PrintN("Found Functions: ")
+  ForEach Functions()
+    If ListIndex(Functions()) < ListSize(Functions())
+      Print(Functions()+", ")
+    Else
+      Print(Functions())
+    EndIf
+  Next
+  PrintN("")
+EndIf
+
 If Verbose=1:PrintN("Print Vars"):EndIf
 If PrintVars = 1
   SortByStringLength_SLOW(Variables());Check for doubles and remove it
   ExcludeList(Arrays(),Variables())
+  ExcludeList(Functions(),Variables())
   
   PrintN("Found Variables: ")
   ForEach Variables()
@@ -849,22 +866,6 @@ If PrintVars = 1
 EndIf
 
 
-
-If Verbose=1:PrintN("Print Funcs"):EndIf
-If PrintFuncs = 1
-  SortByStringLength_SLOW(Functions());Check for doubles and remove it
-  ExcludeList(Arrays(),Functions())
-  ExcludeList(Variables(),Functions())
-  PrintN("Found Functions: ")
-  ForEach Functions()
-    If ListIndex(Functions()) < ListSize(Functions())
-      Print(Functions()+", ")
-    Else
-      Print(Functions())
-    EndIf
-  Next
-  PrintN("")
-EndIf
 
 
 If Verbose=1:PrintN("Merge all Objects into on replacement-list"):EndIf
@@ -908,8 +909,8 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 897
-; FirstLine = 880
+; CursorPosition = 854
+; FirstLine = 832
 ; Folding = -4
 ; EnableXP
 ; DPIAware
