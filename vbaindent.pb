@@ -373,6 +373,7 @@ AddElement(VBASyntax()) : VBASyntax() = "TEXTJOIN"
 AddElement(VBASyntax()) : VBASyntax() = "TRIMMEAN"
 AddElement(VBASyntax()) : VBASyntax() = "YEARFRAC"
 AddElement(VBASyntax()) : VBASyntax() = "YIELDMAT"
+AddElement(VBASyntax()) : VBASyntax() = "readline"
 AddElement(VBASyntax()) : VBASyntax() = "RANDOMIZE"
 AddElement(VBASyntax()) : VBASyntax() = "AGGREGATE"
 AddElement(VBASyntax()) : VBASyntax() = "AMORDEGRC"
@@ -454,6 +455,8 @@ AddElement(VBASyntax()) : VBASyntax() = "NUMBERVALUE"
 AddElement(VBASyntax()) : VBASyntax() = "RANDBETWEEN"
 AddElement(VBASyntax()) : VBASyntax() = "STANDARDIZE"
 AddElement(VBASyntax()) : VBASyntax() = "WEEKDAYNAME"
+AddElement(VBASyntax()) : VBASyntax() = "createobject"
+AddElement(VBASyntax()) : VBASyntax() = "opentextfile"
 AddElement(VBASyntax()) : VBASyntax() = "CEILING.MATH"
 AddElement(VBASyntax()) : VBASyntax() = "CHISQ.INV.RT"
 AddElement(VBASyntax()) : VBASyntax() = "CONFIDENCE.T"
@@ -477,6 +480,7 @@ AddElement(VBASyntax()) : VBASyntax() = "CUBEKPIMEMBER"
 AddElement(VBASyntax()) : VBASyntax() = "FLOOR.PRECISE"
 AddElement(VBASyntax()) : VBASyntax() = "FORMATPERCENT"
 AddElement(VBASyntax()) : VBASyntax() = "NEGBINOM.DIST"
+AddElement(VBASyntax()) : VBASyntax() = "ATENDOFSTREAM"
 AddElement(VBASyntax()) : VBASyntax() = "FORMATCURRENCY"
 AddElement(VBASyntax()) : VBASyntax() = "FORMATDATETIME"
 AddElement(VBASyntax()) : VBASyntax() = "PERCENTILE.EXC"
@@ -885,9 +889,9 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 772
-; FirstLine = 163
-; Folding = A5
+; CursorPosition = 447
+; FirstLine = 441
+; Folding = B5
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
