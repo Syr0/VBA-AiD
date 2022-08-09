@@ -574,6 +574,7 @@ Procedure RegexMatchLineExtract(text$,List ExtractionsResults.s(),Regex)
 EndProcedure
 
 Procedure ArrayExtractionProcedure(text$,List Results.s())
+  text$ = Trim(text$,Chr(9))
   
   If UCase(Left(text$,4)) = UCase("Dim ")
     Arrays$ = Mid(text$,5)
@@ -757,8 +758,17 @@ ctext = ReplaceString(ctext,"Else If","Else"+#LF$+"If")
 If Verbose=1:PrintN("Indent Line by line"):EndIf
 For x = 1 To CountString(ctext, #LF$)+2
   
-  If Verbose=1 And x%10 = 0 :PrintN("Line "+Str(x)+"..."):EndIf
+  If Verbose=1 And x%10 = 0 :Print("Line "+Str(x)+"..."):EndIf
   
+  If Verbose=1 And x%10 = 0 :Print("extract..."):EndIf
+  RegexExtract(line,Functions(),functionsNameRegex)
+  RegexMatchLineExtract(line,VoidFunctions(),vfunctionsNameRegex)
+  ArrayExtractionProcedure(line,Arrays())
+  RegexExtract(line,objects(),ObjectRegex)
+  RegexExtract(line,Variables(),VarNameRegex)
+  
+  
+  If Verbose=1 And x%10 = 0 :Print("indent..."):EndIf
   line = StringField(ctext,x,#LF$)
   If AutoIndent
     line = LTrim(line,Chr(9))
@@ -779,12 +789,7 @@ For x = 1 To CountString(ctext, #LF$)+2
     line = Indent(line,"Select Case","End Select","","","Case",1)
   EndIf
   
-  RegexExtract(line,Functions(),functionsNameRegex)
-  RegexMatchLineExtract(line,VoidFunctions(),vfunctionsNameRegex)
-  ArrayExtractionProcedure(line,Arrays())
-  RegexExtract(line,objects(),ObjectRegex)
-  RegexExtract(line,Variables(),VarNameRegex)
-  
+  If Verbose=1 And x%10 = 0 :Print("merge..."):EndIf
   result + line+#LF$
 Next
 
@@ -880,9 +885,9 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 259
-; FirstLine = 241
-; Folding = N6
+; CursorPosition = 772
+; FirstLine = 163
+; Folding = A5
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
