@@ -560,7 +560,7 @@ Procedure RegexExtract(text$,List ExtractionsResults.s(),Regex)
     Wend
   EndIf
 EndProcedure
-
+  
 Procedure RegexMatchLineExtract(text$,List ExtractionsResults.s(),Regex)
   If ExamineRegularExpression(Regex,text$)
     If NextRegularExpressionMatch(Regex)
@@ -570,6 +570,18 @@ Procedure RegexMatchLineExtract(text$,List ExtractionsResults.s(),Regex)
       EndIf
     EndIf
   EndIf
+EndProcedure
+
+Procedure ArrayExtractionProcedure(text$,List Results.s())
+  
+  If UCase(Left(text$,4)) = UCase("Dim ")
+    Arrays$ = Mid(text$,5)
+    For x = 1 To CountString(Arrays$,",")+1
+      AddElement(results())
+      Results() = StringField(Arrays$,x,",")
+    Next
+  EndIf
+  
 EndProcedure
 
 Procedure.s ReplaceObfString(text.s,SearchString.s,ReplaceString.s)
@@ -725,7 +737,6 @@ NewList VoidFunctions.s()
 vfunctionsNameRegex = CreateRegularExpression(#PB_Any,"(Sub (\w+)\s*\t*\(?\)?)")
 
 NewList Arrays.s()
-ArrayNameRegex = CreateRegularExpression(#PB_Any,"Dim (\w+)[\r\n\s]")
 
 NewList Variables.s()
 VarNameRegex = CreateRegularExpression(#PB_Any,"(?:Set )?(\w+)=")
@@ -752,7 +763,6 @@ For x = 1 To CountString(ctext, #LF$)+2
     line = LTrim(line,Chr(9))
     line = LTrim(line," ")
     
-    
     line = Indent(line,"Class","End Class")
     line = Indent(line,"Function","End Function")
     line = Indent(line,"Private Function","End Function")
@@ -770,7 +780,7 @@ For x = 1 To CountString(ctext, #LF$)+2
   
   RegexExtract(line,Functions(),functionsNameRegex)
   RegexMatchLineExtract(line,VoidFunctions(),vfunctionsNameRegex)
-  RegexExtract(line,Arrays(),ArrayNameRegex)
+  ArrayExtractionProcedure(line,Arrays())
   RegexExtract(line,objects(),ObjectRegex)
   RegexExtract(line,Variables(),VarNameRegex)
   
@@ -869,9 +879,9 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 743
-; FirstLine = 660
-; Folding = N9
+; CursorPosition = 578
+; FirstLine = 536
+; Folding = N6
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
