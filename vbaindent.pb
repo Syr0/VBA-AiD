@@ -257,6 +257,7 @@ AddElement(VBASyntax()) : VBASyntax() = "T.DIST"
 AddElement(VBASyntax()) : VBASyntax() = "T.TEST"
 AddElement(VBASyntax()) : VBASyntax() = "Z.TEST"
 AddElement(VBASyntax()) : VBASyntax() = "COOKIE"
+AddElement(VBASyntax()) : VBASyntax() = "PUBLIC"
 AddElement(VBASyntax()) : VBASyntax() = "PRIVATE"
 AddElement(VBASyntax()) : VBASyntax() = "ACCRINT"
 AddElement(VBASyntax()) : VBASyntax() = "ADDRESS"
@@ -879,8 +880,8 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 578
-; FirstLine = 536
+; CursorPosition = 259
+; FirstLine = 241
 ; Folding = N6
 ; EnableXP
 ; DPIAware
