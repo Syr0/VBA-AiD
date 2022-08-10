@@ -764,11 +764,9 @@ ObjectRegex = CreateRegularExpression(#PB_Any,"\n\t*(?:Const )?(\w+)[\(\.=]")
 line.s 
 result.s 
 
-
 If Verbose=1:PrintN("Replace Else If to Else\nIf"):EndIf
 ;Special Case Else IF are NOT Elif but Else{If()...}
 ctext = ReplaceString(ctext,"Else If","Else"+#LF$+"If")
-
 
 ;Special Case Else IF are NOT Elif but Else{If()...}
 ctext = ReplaceString(ctext,"Then","Then"+#LF$)
@@ -814,11 +812,8 @@ For x = 1 To CountString(ctext, #LF$)+2
   result + line+#LF$
 Next
 
-
-
 If Verbose=1:PrintN("Merge void Functions with normal Functions"):EndIf
 MergeLists(VoidFunctions(),Functions())
-
 
 If Verbose=1:PrintN("Print Arrays"):EndIf
 If PrintArray = 1
@@ -833,8 +828,6 @@ If PrintArray = 1
   Next
   PrintN("")
 EndIf
-
-
 
 If Verbose=1:PrintN("Print Funcs"):EndIf
 If PrintFuncs = 1
@@ -868,9 +861,6 @@ If PrintVars = 1
   PrintN("")
 EndIf
 
-
-
-
 If Verbose=1:PrintN("Merge all Objects into on replacement-list"):EndIf
 MergeLists(Functions(),objects())
 MergeLists(Variables(),objects())
@@ -888,14 +878,12 @@ If Deobf = 1
   Next
 EndIf
 
-
 If Verbose=1:PrintN("Restore original strings"):EndIf
 ;Backup Strings
 SortByStringLength_SLOW(SavedStrings(),1)
 ForEach SavedStrings()
   result = ReplaceObfString(result,SavedStrings(),SavedStrings())
 Next
-
 
 If Verbose=1:PrintN("Write result to output"):EndIf
 If Clipboard = 1
@@ -912,9 +900,9 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 773
-; FirstLine = 728
-; Folding = -4
+; CursorPosition = 895
+; FirstLine = 254
+; Folding = Aw
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
