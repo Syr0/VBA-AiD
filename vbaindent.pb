@@ -671,7 +671,7 @@ EndIf
 t = ElapsedMilliseconds()
 oneparam$ = "" : file1.s = "" : file2.s = ""
 For x = 0 To CountProgramParameters()
-  If FileSize(GetPathPart(ProgramParameter(x))) = -2
+  If FileSize(GetPathPart(ProgramParameter(x))) = -2 Or FileSize(ProgramParameter(x)) > 0 Or Len(file1) > 0
     If file1 = ""
       file1 = ProgramParameter(x)
     Else
@@ -900,11 +900,11 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 895
-; FirstLine = 254
+; CursorPosition = 673
+; FirstLine = 37
 ; Folding = Aw
 ; EnableXP
 ; DPIAware
 ; UseIcon = indentation.ico
 ; Executable = VBA_AiD.exe
-; CommandLine = -aidevarsfuncarraydocl
+; CommandLine = -aidevarsfuncarraydo inc-controller-news.asp result.txt
