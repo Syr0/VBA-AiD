@@ -770,6 +770,9 @@ If Verbose=1:PrintN("Replace Else If to Else\nIf"):EndIf
 ctext = ReplaceString(ctext,"Else If","Else"+#LF$+"If")
 
 
+;Special Case Else IF are NOT Elif but Else{If()...}
+ctext = ReplaceString(ctext,"Then","Then"+#LF$)
+
 If Verbose=1:PrintN("Indent Line by line"):EndIf
 For x = 1 To CountString(ctext, #LF$)+2
   
@@ -909,8 +912,8 @@ PrintN("Finished.")
 If Verbose=1:PrintN("Time needed: "+Str(ElapsedMilliseconds() - t)+" ms"):EndIf
 ; IDE Options = PureBasic 6.00 LTS (Windows - x64)
 ; ExecutableFormat = Console
-; CursorPosition = 854
-; FirstLine = 832
+; CursorPosition = 773
+; FirstLine = 728
 ; Folding = -4
 ; EnableXP
 ; DPIAware
